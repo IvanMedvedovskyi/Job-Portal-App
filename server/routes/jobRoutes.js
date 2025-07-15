@@ -7,6 +7,7 @@ import {
   applyJob,
   likeJob,
   getJobById,
+  deleteJob,
 } from "../controllers/jobController.js";
 
 import protectMiddleware from "../middleware/protectMiddleware.js";
@@ -28,5 +29,8 @@ router.put("/jobs/like/:id", protectMiddleware, likeJob);
 
 // get job by id
 router.get("/jobs/:id", protectMiddleware, getJobById);
+
+// delete job
+router.delete("/jobs/:id", protectMiddleware, deleteJob);
 
 export default router;

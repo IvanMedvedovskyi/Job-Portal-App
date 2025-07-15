@@ -187,3 +187,28 @@ export const getJobById = asyncHandler(async (req, res) => {
     });
   }
 });
+
+export const deleteJob = asyncHandler(async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ message: "job not found" });
+    }
+
+    const user = await getUserByAuth0Id(req.oidc.user.sub);
+    if (!user) {
+      return res.status(404), json({ message: "User not found" });
+    }
+
+    await job.deleteOne({
+      _id: req.params.id,
+    });
+
+    return res.status(200).json({ message: "Job deleted successfully" });
+  } catch (error) {
+    console.log("Error in getJobById", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
