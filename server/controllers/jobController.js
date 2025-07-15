@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { getUserByAuth0Id } from "../services/userService.js";
 import Job from "../models/Job.js";
 import User from "../models/User.js";
+import { findJobs } from "../services/jobService.js";
 
 export const createJob = asyncHandler(async (req, res) => {
   try {
@@ -93,6 +94,94 @@ export const getJobsByUser = asyncHandler(async (req, res) => {
     return res.status(200).json(jobs);
   } catch (error) {
     console.log("Error in getJobsByUser", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
+export const searchJobs = asyncHandler(async (req, res) => {
+  try {
+    const jobs = await findJobs(req.query);
+    return res.status(200).json(jobs);
+  } catch (error) {
+    console.log("Error in searchJobs", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
+export const applyJob = asyncHandler(async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+
+    if (!job) {
+      return res.status(404), json({ message: "Job not found" });
+    }
+
+    const user = await getUserByAuth0Id(req.oidc.user.sub);
+
+    if (!user) {
+      return res.status(404), json({ message: "User not found" });
+    }
+
+    if (job.applicants.includes(user._id)) {
+      return res.status(400).json({ message: "Already applied for this job" });
+    }
+
+    job.applicants.push(user._id);
+
+    await job.save();
+
+    return res.status(200).json(job);
+  } catch (error) {
+    console.log("Error in applyJob", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
+export const likeJob = asyncHandler(async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const user = await getUserByAuth0Id(req.oidc.user.sub);
+    if (!user) {
+      return res.status(404), json({ message: "User not found" });
+    }
+
+    const isLiked = job.likes.includes(user._id);
+    if (isLiked) {
+      job.likes = job.likes.filter((like) => !like.equals(user._id));
+    } else {
+      job.likes.push(user._id);
+    }
+
+    await job.save();
+    return res.status(200).json(job);
+  } catch (error) {
+    console.log("Error in likeJob", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
+export const getJobById = asyncHandler(async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ message: "job not found" });
+    }
+
+    return res.status(200).json(job);
+  } catch (error) {
+    console.log("Error in getJobById", error.message);
     return res.status(500).json({
       message: "Internal server error",
     });
