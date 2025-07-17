@@ -10,6 +10,25 @@ interface GlobalState {
   userProfile: User | null;
   getUserProfile: (id: string) => Promise<void>;
   loading: boolean;
+
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  activeEmploymentTypes: never[];
+  salaryType: string;
+  negotiable: boolean;
+  tags: never[];
+  skills: never[];
+  location: {
+    country: string;
+    city: string;
+    address: string;
+  };
+  handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDescriptionChange: (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  handleSalaryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const GlobalContext = createContext<GlobalState | undefined>(undefined);
@@ -26,6 +45,20 @@ export const GlobalContextProvider = ({
   const [auth0User, setAuth0User] = useState<AuthUser | null>(null);
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [salary, setSalary] = useState(0);
+  const [activeEmploymentTypes, setActiveEmploymentTypes] = useState([]);
+  const [salaryType, setSalaryType] = useState("Yearly");
+  const [negotiable, setNegotiable] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [location, setLocation] = useState({
+    country: "",
+    city: "",
+    address: "",
+  });
 
   const checkAuth = async () => {
     setLoading(true);
@@ -54,12 +87,38 @@ export const GlobalContextProvider = ({
     }
   };
 
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setJobTitle(event.target.value.trimStart());
+  };
+
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setJobDescription(event.target.value.trimStart());
+  };
+
+  const handleSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSalary(+event.target.value);
+  };
+
   const value: GlobalState = {
     isAuth,
     auth0User,
     userProfile,
     getUserProfile,
     loading,
+    jobTitle,
+    jobDescription,
+    salary,
+    activeEmploymentTypes,
+    salaryType,
+    negotiable,
+    tags,
+    skills,
+    location,
+    handleTitleChange,
+    handleDescriptionChange,
+    handleSalaryChange,
   };
 
   useEffect(() => {
