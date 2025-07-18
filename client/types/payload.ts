@@ -3,9 +3,9 @@ export interface CreateJobPayload {
   description: string;
   location: string;
   salary: number;
-  salaryType?: "hourly" | "monthly" | "yearly";
+  salaryType?: string;
   negotiable?: boolean;
   jobType: string[];
   tags?: string[];
-  skills: string[]; 
+  skills: string[];
 }

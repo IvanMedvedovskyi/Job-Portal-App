@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import axios from "axios";
 import { AuthUser, User } from "@/types/types";
 
@@ -14,21 +21,34 @@ interface GlobalState {
   jobTitle: string;
   jobDescription: string;
   salary: number;
-  activeEmploymentTypes: never[];
+  activeEmploymentTypes: string[];
   salaryType: string;
   negotiable: boolean;
-  tags: never[];
-  skills: never[];
+  tags: string[];
+  skills: string[];
   location: {
     country: string;
     city: string;
     address: string;
   };
+  setActiveEmploymentTypes: Dispatch<SetStateAction<string[]>>;
+  setJobDescription: React.Dispatch<React.SetStateAction<string>>;
+  setSalaryType: React.Dispatch<React.SetStateAction<string>>;
+  setNegotiable: React.Dispatch<React.SetStateAction<boolean>>;
   handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDescriptionChange: (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
   handleSalaryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+  setSkills: React.Dispatch<React.SetStateAction<string[]>>;
+  setLocation: React.Dispatch<
+    React.SetStateAction<{
+      country: string;
+      city: string;
+      address: string;
+    }>
+  >;
 }
 
 const GlobalContext = createContext<GlobalState | undefined>(undefined);
@@ -49,11 +69,13 @@ export const GlobalContextProvider = ({
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [salary, setSalary] = useState(0);
-  const [activeEmploymentTypes, setActiveEmploymentTypes] = useState([]);
+  const [activeEmploymentTypes, setActiveEmploymentTypes] = useState<string[]>(
+    []
+  );
   const [salaryType, setSalaryType] = useState("Yearly");
   const [negotiable, setNegotiable] = useState(false);
-  const [tags, setTags] = useState([]);
-  const [skills, setSkills] = useState([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [skills, setSkills] = useState<string[]>([]);
   const [location, setLocation] = useState({
     country: "",
     city: "",
@@ -111,6 +133,8 @@ export const GlobalContextProvider = ({
     jobDescription,
     salary,
     activeEmploymentTypes,
+    setActiveEmploymentTypes,
+    setJobDescription,
     salaryType,
     negotiable,
     tags,
@@ -119,6 +143,11 @@ export const GlobalContextProvider = ({
     handleTitleChange,
     handleDescriptionChange,
     handleSalaryChange,
+    setNegotiable,
+    setSalaryType,
+    setTags,
+    setSkills,
+    setLocation,
   };
 
   useEffect(() => {
