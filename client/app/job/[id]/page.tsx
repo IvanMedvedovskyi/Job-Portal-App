@@ -24,7 +24,7 @@ const page = () => {
       <Header />
 
       <div className="p-8 mb-8 mx-auto w-[90%] rounded-md flex gap-8">
-        <div>
+        <div className="w-[26%] flex flex-col gap-8">
           <JobCard activeJob job={job} />
         </div>
       </div>
