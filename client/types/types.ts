@@ -43,7 +43,7 @@ export interface Job {
   title: string;
   location: string;
   salary: number;
-  salaryType: "hourly" | "monthly" | "yearly";
+  salaryType: "Yealy" | "Monthly" | "Weekly" | "Hourly";
   negotiable: boolean;
   jobType: string[];
   description: string;

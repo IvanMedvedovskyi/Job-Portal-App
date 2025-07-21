@@ -134,6 +134,7 @@ export const JobsContextProvider = ({
       setUserJobs((prevUserJobs) =>
         prevUserJobs.filter((userJob) => userJob._id !== id)
       );
+      
       toast.success("Job deleted successfully");
     } catch (error) {
       console.log("Error deleting job...", error);
