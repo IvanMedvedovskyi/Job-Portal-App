@@ -53,7 +53,7 @@ interface GlobalState {
 
 const GlobalContext = createContext<GlobalState | undefined>(undefined);
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 axios.defaults.withCredentials = true;
 
 export const GlobalContextProvider = ({

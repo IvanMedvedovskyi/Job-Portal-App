@@ -1,8 +1,20 @@
+"use client";
 import Header from "@/components/Header";
 import JobForm from "@/components/job-post/JobForm";
-import React from "react";
+import { useGlobalContext } from "@/context/globalContext";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 const page = () => {
+  const router = useRouter();
+  const { isAuth, loading } = useGlobalContext();
+
+  useEffect(() => {
+    if (!isAuth && !loading) {
+      router.push(`${process.env.NEXT_PUBLIC_API_URL}/login`);
+    }
+  }, [isAuth]);
+
   return (
     <div className="flex flex-col">
       <Header />

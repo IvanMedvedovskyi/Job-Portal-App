@@ -6,27 +6,30 @@ import MyJob from "@/components/job-item/MyJob";
 import { useGlobalContext } from "@/context/globalContext";
 import { useJobsContext } from "@/context/jobsContext";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
   const { userJobs, jobs } = useJobsContext();
   const { isAuth, loading, userProfile } = useGlobalContext();
+  const router = useRouter();
 
   const [activeTab, setActiveTab] = useState("posts");
 
   const userId = userProfile?._id;
 
-  if (!userId) return;
+  useEffect(() => {
+    if (!isAuth && !loading) {
+      router.push(`${process.env.NEXT_PUBLIC_API_URL}/login`);
+    }
+  }, [isAuth]);
 
-  const router = useRouter();
-
-  const likedJobs = jobs.filter((job) => {
-    return job.applicants.includes(userId);
-  });
-
-  if (loading) {
+  if (loading || !userProfile) {
     return <div>Loading...</div>;
   }
+
+  const likedJobs = userId
+    ? jobs.filter((job) => job.applicants.includes(userId))
+    : [];
 
   return (
     <div>

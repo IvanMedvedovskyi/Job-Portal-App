@@ -8,7 +8,6 @@ import { LogIn, UserPlus } from "lucide-react";
 import React from "react";
 import Profile from "./Profile";
 
-
 const Header = () => {
   const pathname = usePathname();
   const { isAuth } = useGlobalContext();
@@ -67,14 +66,14 @@ const Header = () => {
         ) : (
           <div className="flex items-center gap-6">
             <Link
-              href={"http://localhost:8000/login"}
+              href={`${process.env.NEXT_PUBLIC_API_URL}/login`}
               className="py-2 px-6 rounded-md border flex items-center gap-4 bg-indigo-500 text-white border-indigo-500 hover:bg-indigo-600 transition-all duration-200 ease-in-out"
             >
               <LogIn className="w-4 h-4" />
               Login
             </Link>
             <Link
-              href={"http://localhost:8000/login"}
+              href={`${process.env.NEXT_PUBLIC_API_URL}/login`}
               className="py-2 px-6 rounded-md border flex items-center gap-4 border-indigo-500 text-indigo-500 hover:bg-indigo-500/10 transition-all duration-200 ease-in-out"
             >
               <UserPlus className="w-4 h-4" />

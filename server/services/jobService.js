@@ -15,9 +15,8 @@ export const findJobs = async ({ tags, location, title }) => {
     query.title = { $regex: title, $options: "i" };
   }
 
-  const jobs = await Job.find(query).populate(
-    "createdBy",
-    "name profilePicture"
-  );
+  const jobs = await Job.find(query)
+    .sort({ createdAt: -1 })
+    .populate("createdBy", "name profilePicture");
   return jobs;
 };

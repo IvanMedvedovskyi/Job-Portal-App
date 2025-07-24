@@ -6,10 +6,11 @@ import { Job } from "@/types/types";
 import { Bookmark, Calendar } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
 import { formatMoney } from "@/utils/formatMoney";
 import { formatDates } from "@/utils/formatDates";
+import { bookmark, bookmarkEmpty } from "@/utils/Icons";
 
 interface JobCardProps {
   job: Job;
@@ -18,7 +19,7 @@ interface JobCardProps {
 
 const JobCard: FC<JobCardProps> = ({ job, activeJob }) => {
   const { likeJob } = useJobsContext();
-  const { userProfile, isAuth } = useGlobalContext();
+  const { isAuth, userProfile } = useGlobalContext();
   const [isLiked, setIsLiked] = useState(false);
   const router = useRouter();
 
@@ -52,6 +53,12 @@ const JobCard: FC<JobCardProps> = ({ job, activeJob }) => {
     }
   };
 
+  useEffect(() => {
+    if (job && userProfile) {
+      setIsLiked(job.likes.includes(userProfile._id));
+    }
+  }, [job.likes, userProfile]);
+
   const handleLike = (id: string) => {
     setIsLiked((prev) => !prev);
     likeJob(id);
@@ -65,7 +72,6 @@ const JobCard: FC<JobCardProps> = ({ job, activeJob }) => {
           : "bg-white"
       }`}
     >
-      {/* Верх: Аватар, имя, кнопка лайка */}
       <div className="flex justify-between items-start">
         <div
           className="flex items-center gap-4 cursor-pointer"
@@ -79,9 +85,9 @@ const JobCard: FC<JobCardProps> = ({ job, activeJob }) => {
             className="rounded-full shadow"
           />
           <div className="flex flex-col">
-            <p className="font-semibold text-lg">{name}</p>
+            <p className="font-semibold text-lg">{title}</p>
             <p className="text-sm text-gray-500">
-              {applicants.length}{" "}
+              {name}: {applicants.length}{" "}
               {applicants.length === 1 ? "Applicant" : "Applicants"}
             </p>
           </div>
@@ -91,17 +97,16 @@ const JobCard: FC<JobCardProps> = ({ job, activeJob }) => {
           onClick={() =>
             isAuth
               ? handleLike(job._id)
-              : router.push("http://localhost:8000/login")
+              : router.push(`${process.env.NEXT_PUBLIC_API_URL}/login`)
           }
           className={`text-2xl ${
             isLiked ? "text-indigo-500" : "text-gray-400"
           }`}
         >
-          <Bookmark size={24} />
+          {isLiked ? bookmark : bookmarkEmpty}
         </button>
       </div>
 
-      {/* Тип работы */}
       {jobType.length > 0 && (
         <div className="flex gap-2 flex-wrap">
           {jobType.map((type, index) => (
