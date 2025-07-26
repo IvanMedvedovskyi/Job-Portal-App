@@ -85,11 +85,13 @@ routesFiles.forEach((file) => {
     });
 });
 
+const PORT = process.env.PORT || 8000
+
 const server = async () => {
   try {
     await connect();
-    app.listen(process.env.PORT, () => {
-      console.log(`Server is listening on port ${process.env.PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
     });
   } catch (error) {
     console.log("Server error", error.message);
