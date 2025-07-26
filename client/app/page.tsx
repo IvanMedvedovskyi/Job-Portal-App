@@ -19,9 +19,8 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { title } from "process";
 
-export const Home = () => {
+const Home = () => {
   const features = [
     {
       icon: <Briefcase className="w-6 h-6 text-indigo-500" />,
