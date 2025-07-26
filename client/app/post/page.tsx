@@ -5,7 +5,7 @@ import { useGlobalContext } from "@/context/globalContext";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const { isAuth, loading } = useGlobalContext();
 
@@ -30,4 +30,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

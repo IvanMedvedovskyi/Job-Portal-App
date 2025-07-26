@@ -10,7 +10,7 @@ import { grip, list, table } from "@/utils/Icons";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const { jobs, filters, minSalary, maxSalary } = useJobsContext();
   const [columns, setColumns] = useState(3);
 
@@ -135,4 +135,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

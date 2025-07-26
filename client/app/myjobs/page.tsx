@@ -8,7 +8,7 @@ import { useJobsContext } from "@/context/jobsContext";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const { userJobs, jobs } = useJobsContext();
   const { isAuth, loading, userProfile } = useGlobalContext();
   const router = useRouter();
@@ -85,4 +85,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
