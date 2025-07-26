@@ -26,7 +26,7 @@ const config = {
     login: "/login",
     logout: "/logout",
   },
-  Session: {
+  session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000,
     cookie: {
       domain: "job-portal-app-nextjs-nodejs-mongodb.onrender.com",
