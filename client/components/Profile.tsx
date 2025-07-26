@@ -17,12 +17,11 @@ import { Badge } from "./ui/badge";
 
 function Profile() {
   const { userProfile } = useGlobalContext();
+  const router = useRouter();
 
   if (!userProfile) return null;
 
   const { profilePicture, name, profession, email } = userProfile;
-
-  const router = useRouter();
 
   return (
     <DropdownMenu>
