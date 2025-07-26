@@ -7,6 +7,7 @@ import fs from "fs";
 import connect from "./db/connect.js";
 import User from "./models/User.js";
 import asyncHandler from "express-async-handler";
+import { Session } from "inspector/promises";
 
 dotenv.config();
 
@@ -21,6 +22,17 @@ const config = {
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   routes: {
     postLogoutRedirect: process.env.CLIENT_URL,
+    callback: "/callback",
+    login: "/login",
+    logout: "/logout",
+  },
+  Session: {
+    absoluteDuration: 30 * 24 * 60 * 60 * 1000,
+    cookie: {
+      domain: "job-portal-app-nextjs-nodejs-mongodb.onrender.com",
+      secure: true,
+      sameSite: "None",
+    },
   },
 };
 
@@ -28,6 +40,9 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["set-cookie"],
   })
 );
 
@@ -85,7 +100,7 @@ routesFiles.forEach((file) => {
     });
 });
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8000;
 
 const server = async () => {
   try {
